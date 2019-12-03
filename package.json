@@ -1,0 +1,20 @@
+{
+  "name": "observable-local",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "bin": {
+    "obs": "./cli.js"
+  },
+  "dependencies": {
+    "@alex.garcia/unofficial-observablehq-compiler": "^0.2.0",
+    "@observablehq/runtime": "^4.4.4",
+    "express": "^4.17.1",
+    "serve-index": "^1.9.1",
+    "yargs": "^14.0.0"
+  }
+}

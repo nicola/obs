@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+
+<head>
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@3/dist/inspector.css"
+    />
+    <style>
+     #main {
+         margin: auto;
+         max-width: 42rem;
+         padding: 2.5rem 1.25rem;
+         min-height: 100vh;
+     }
+    </style>
+</head>
+<body class="O--body">
+    <div id="main"></div>
+    <script type="module">
+     import {
+         Runtime,
+         Inspector
+     } from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+
+     import { Compiler } from "https://cdn.jsdelivr.net/npm/@alex.garcia/unofficial-observablehq-compiler/dist/index-esm.js";
+
+     const compile = new Compiler();
+     const define = compile.module(`
+
+TEMPLATETAG
+
+     `);
+
+     const rt = new Runtime();
+     window.MODULE = rt.module(
+         define,
+         Inspector.into(document.querySelector("#main"))
+     );
+    </script>
+</body>
