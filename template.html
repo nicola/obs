@@ -5,7 +5,7 @@
     <link
         rel="stylesheet"
         type="text/css"
-        href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@3/dist/inspector.css"
+        href="/dist/inspector.css"
     />
     <style>
      #main {
@@ -22,9 +22,9 @@
      import {
          Runtime,
          Inspector
-     } from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+     } from "/dist/runtime.js";
 
-     import { Compiler } from "https://cdn.jsdelivr.net/npm/@alex.garcia/unofficial-observablehq-compiler/dist/index-esm.js";
+     import { Compiler } from "/dist/index-esm.js";
 
      const compile = new Compiler();
      const define = compile.module(`
