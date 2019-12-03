@@ -4,7 +4,7 @@ const fs = require('fs')
 const compiler = require('@alex.garcia/unofficial-observablehq-compiler')
 const serveIndex = require('serve-index')
 
-require('yargs') // eslint-disable-line
+require('yargs')
   .command(
     'serve <port> [path]',
     'Serve observable notebooks in folder',
@@ -22,6 +22,8 @@ require('yargs') // eslint-disable-line
       const port = argv.port
       const base = path.resolve(argv.path || process.cwd())
       const notebookTemplate = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf-8')
+
+      app.use('/dist', express.static(path.join(__dirname, 'dist')))
 
       app.use('/', serveIndex(base, {
         'icons': true,
