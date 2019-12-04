@@ -36,9 +36,11 @@ require('yargs')
       }))
 
       app.use('*.notebook.js', (req, res) => {
+        console.log('notebook')
         const notebookPath = path.join(base, req.baseUrl)
         const notebook = fs.readFileSync(notebookPath, 'utf-8')
-        const html = notebookTemplate.replace(/TEMPLATETAG/g, notebook)
+        const escapedNotebook = notebook.replace(/`/g, '\\`').replace(/\$/g, '\\$')
+        const html = notebookTemplate.replace(/TEMPLATETAG/g, escapedNotebook)
 
         res.send(html)
       })
