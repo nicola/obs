@@ -40,7 +40,7 @@ require('yargs')
         const notebookPath = path.join(base, req.baseUrl)
         const notebook = fs.readFileSync(notebookPath, 'utf-8')
         const escapedNotebook = notebook.replace(/`/g, '\\`').replace(/\$/g, '\\$')
-        const html = notebookTemplate.replace(/TEMPLATETAG/g, escapedNotebook)
+        const html = notebookTemplate.replace(/TEMPLATETAG/g, notebook)
 
         res.send(html)
       })

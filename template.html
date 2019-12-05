@@ -7,6 +7,13 @@
         type="text/css"
         href="/dist/inspector.css"
     />
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/dist/github-markdown.css"
+    />
+
     <style>
      #main {
          margin: auto;
@@ -14,10 +21,14 @@
          padding: 2.5rem 1.25rem;
          min-height: 100vh;
      }
+     .observablehq {
+         padding-bottom: 10px;
+         padding-top: 10px;
+     }
     </style>
 </head>
 <body class="O--body">
-    <div id="main"></div>
+    <div id="main" class="markdown-body"></div>
     <script type="module">
      import {
          Runtime,
@@ -27,16 +38,15 @@
      import { Compiler } from "/dist/index-esm.js";
 
      const compile = new Compiler();
-     const define = compile.module(`
-
-TEMPLATETAG
-
-     `);
+     const define = compile.module(document.querySelector('#model').text)
 
      const rt = new Runtime();
      window.MODULE = rt.module(
          define,
          Inspector.into(document.querySelector("#main"))
      );
+    </script>
+    <script id="model" type="text/plain">
+     TEMPLATETAG
     </script>
 </body>
