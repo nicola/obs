@@ -12,6 +12,9 @@ $ npm -g i
 ```
 
 ## Usage
+
+Write your notebooks file names with the extension `.notebook.js`
+
 ```
 obs [command]
 
