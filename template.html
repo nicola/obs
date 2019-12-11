@@ -15,6 +15,9 @@
     />
 
     <style>
+     body {
+         background-color: #cecece;
+     }
      #main {
          margin: auto;
          max-width: 80%;
@@ -35,18 +38,54 @@
          Inspector
      } from "/dist/runtime.js";
 
+     const extractPath = path => {
+         let source = path;
+         let m;
+
+         // "https://api.observablehq.com/@jashkenas/inputs.js?v=3" => strip off ".js"
+         if ((m = /\.js(\?|$)/i.exec(source))) source = source.slice(0, m.index);
+
+         // "74f872c4fde62e35" => "d/..."
+         if ((m = /^[0-9a-f]{16}$/i.test(source))) source = `d/${source}`;
+
+         // link of notebook
+         if ((m = /^https:\/\/(api\.|beta\.|)observablehq\.com\//i.exec(source)))
+             source = source.slice(m[0].length);
+         return source;
+     };
+
      import { Compiler } from "/dist/index-esm.js";
+     async function resolver (path) {
+         console.log('loading', path)
+         if (path.substr(0,2) === './') {
+             console.log('loading', raw)
+             return fetch(raw).then(f => {
+                 const comp = new Compiler(resolver)
+                 return comp.module(f.body())
+             })
+         } else {
+             const source = extractPath(path);
+             return import(`https://api.observablehq.com/${source}.js?v=3`).then(
+                 m => m.default
+             );
+         }
+     };
 
-     const compile = new Compiler();
-     const define = compile.module(document.querySelector('#model').text)
 
-     const rt = new Runtime();
-     window.MODULE = rt.module(
-         define,
-         Inspector.into(document.querySelector("#main"))
-     );
-    </script>
-    <script id="model" type="text/plain">
-     TEMPLATETAG
+     const compile = new Compiler(resolver);
+
+     fetch(window.location.href.replace(/\.js/, '.raw.js'))
+         .then(res => {
+             return res.text()
+         })
+         .then((body) => {
+             const define = compile.module(body)
+
+             const rt = new Runtime();
+             window.MODULE = rt.module(
+                 define,
+                 Inspector.into(document.querySelector("#main"))
+             );
+         })
     </script>
 </body>

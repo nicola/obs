@@ -11,8 +11,9 @@
     "obs": "./cli.js"
   },
   "dependencies": {
-    "@alex.garcia/unofficial-observablehq-compiler": "^0.2.0",
-    "@observablehq/runtime": "^4.4.4",
+    "@alex.garcia/unofficial-observablehq-compiler": "^0.3.2",
+    "@observablehq/parser": "^3.0.0",
+    "@observablehq/runtime": "^4.6.4",
     "express": "^4.17.1",
     "serve-index": "^1.9.1",
     "yargs": "^14.0.0"

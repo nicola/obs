@@ -2,7 +2,9 @@
 const path = require('path')
 const fs = require('fs')
 const compiler = require('@alex.garcia/unofficial-observablehq-compiler')
+const { parseModule } = require('@observablehq/parser')
 const serveIndex = require('serve-index')
+// const { Inspector, Runtime } = require("@observablehq/runtime");
 
 require('yargs')
   .command(
@@ -21,7 +23,6 @@ require('yargs')
       const app = express()
       const port = argv.port
       const base = path.resolve(argv.path || process.cwd())
-      const notebookTemplate = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf-8')
 
       app.use('/dist', express.static(path.join(__dirname, 'dist')))
 
@@ -36,14 +37,30 @@ require('yargs')
       }))
 
       app.use('*.notebook.js', (req, res) => {
-        console.log('notebook')
+        const notebookTemplate = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf-8')
         const notebookPath = path.join(base, req.baseUrl)
         const notebook = fs.readFileSync(notebookPath, 'utf-8')
         const escapedNotebook = notebook.replace(/`/g, '\\`').replace(/\$/g, '\\$')
-        const html = notebookTemplate.replace(/TEMPLATETAG/g, notebook)
+        const html = notebookTemplate // .replace(/TEMPLATETAG/g, notebook)
 
         res.send(html)
       })
+
+      app.use('*.notebook.raw.js', (req, res) => {
+        const notebookPath = path.join(base, req.baseUrl.replace('.raw', ''))
+        const notebook = fs.readFileSync(notebookPath, 'utf-8')
+        res.type('text')
+        res.send(notebook)
+      })
+
+      app.use('*.notebook.define.js', (req, res) => {
+        const notebookPath = path.join(base, req.baseUrl.replace('.define', ''))
+        const notebook = fs.readFileSync(notebookPath, 'utf-8')
+
+        res.send(parseModule(notebook))
+      })
+
+      app.use('/', express.static(base))
 
       app.listen(port, () => {
         console.log(`Observable server listening on port ${port}!`)
