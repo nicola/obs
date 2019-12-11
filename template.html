@@ -74,7 +74,7 @@
 
      const compile = new Compiler(resolver);
 
-     fetch(window.location.href.replace(/\.js/, '.raw.js'))
+     fetch(window.location.href.replace(/\.js/, '.raw.js') + '?time=' + (new Date()).getTime())
          .then(res => {
              return res.text()
          })
