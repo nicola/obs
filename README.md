@@ -26,3 +26,7 @@ Options:
   --version      Show version number                                   [boolean]
   --verbose, -v  Run with verbose logging                              [boolean]
 ```
+
+## License
+
+ISC
