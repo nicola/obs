@@ -15,9 +15,6 @@
     />
 
     <style>
-     body {
-         background-color: #cecece;
-     }
      #main {
          margin: auto;
          max-width: 80%;
@@ -72,7 +69,7 @@
      };
 
 
-     const compile = new Compiler(resolver);
+     const compile = new Compiler();
 
      fetch(window.location.href.replace(/\.js/, '.raw.js') + '?time=' + (new Date()).getTime())
          .then(res => {
